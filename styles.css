@@ -57,31 +57,10 @@ body {
   justify-content: center;
 }
 
-.loading-animation {
+#loader-canvas {
   width: 80px;
   height: 80px;
-  border-radius: 50%;
-  border: 3px solid transparent;
-  border-top-color: var(--accent-color);
-  border-bottom-color: var(--accent-color);
-  animation: spin 1.2s linear infinite;
-}
-
-.loading-animation:before, .loading-animation:after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-}
-
-.loading-animation:before {
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
-  border: 3px solid transparent;
-  border-left-color: var(--accent-color);
-  border-right-color: var(--accent-color);
-  animation: spin 1.8s linear infinite reverse;
+  display: block;
 }
 
 .loader-text {
@@ -142,6 +121,37 @@ body {
   padding: 0 5%;
   width: 100%;
 }
+
+/* Fixed viewport 3D canvas — sits behind all page content */
+#three-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* All major sections render above the 3D canvas */
+.main,
+.hero,
+.second,
+.projects-section,
+.about,
+.contact-section,
+.subscribe,
+.social-share,
+.footer,
+.nav,
+.heading,
+.small-heading,
+.herofooter {
+  position: relative;
+  z-index: 2;
+}
+
+
 
 .nav {
   display: flex;
@@ -255,11 +265,12 @@ body {
 
 .herofooter {
   width: 100%;
-  position: absolute;
+  position: absolute !important;
   bottom: 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  z-index: 2;
 }
 
 .herofooter a {

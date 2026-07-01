@@ -31,69 +31,6 @@ gsap.ticker.add((time) => {
 
 gsap.ticker.lagSmoothing(0);
 
-// Preloader functionality 
-document.addEventListener("DOMContentLoaded", function() {
-    const loaderWrapper = document.querySelector(".loader-wrapper");
-    
-    // Force the loader to show for at least 2 seconds
-    setTimeout(function() {
-      // Make sure all content is loaded
-      window.addEventListener("load", function() {
-        if (loaderWrapper) {
-          loaderWrapper.classList.add("loader-hidden");
-          
-          // Remove loader from DOM after transition ends
-          loaderWrapper.addEventListener("transitionend", function() {
-            document.body.removeChild(loaderWrapper);
-          });
-        }
-      });
-      
-      // Fallback in case load event already fired
-      if (document.readyState === "complete") {
-        if (loaderWrapper) {
-          loaderWrapper.classList.add("loader-hidden");
-          
-          // Remove loader from DOM after transition ends
-          loaderWrapper.addEventListener("transitionend", function() {
-            if (loaderWrapper.parentNode) {
-              document.body.removeChild(loaderWrapper);
-            }
-          });
-        }
-      }
-    }, 300);
-  });
-
- // Cursor animation with mobile check
-  const minicircle = document.querySelector(".minicircle");
-  let isMobile = window.innerWidth <= 768;
-
-  function updateCursorVisibility() {
-      if (isMobile) {
-          minicircle.style.display = 'none';
-      } else {
-          minicircle.style.display = 'block';
-      }
-  }
-
-  updateCursorVisibility();
-  window.addEventListener('resize', () => {
-      isMobile = window.innerWidth <= 768;
-      updateCursorVisibility();
-  });
-
-  if (!isMobile) {
-      window.addEventListener("mousemove", function(details) {
-          gsap.to(minicircle, {
-              x: details.clientX,
-              y: details.clientY,
-              duration: 0.2,
-              ease: "power2.out"
-          });
-      });
-  }
-
   // GSAP Animations
   gsap.from(".nav", {
       y: -100,
@@ -167,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function() {
       updateImageVisibility();
       window.addEventListener('resize', updateImageVisibility);
 
-      if (!isMobile) {
+      if (window.innerWidth > 768) {
           elem.addEventListener("mousemove", function (details) {
               gsap.to(img, {
                   left: details.clientX,

@@ -1,0 +1,11 @@
+// Vertex shader for the GLSL fluid hero background
+precision highp float;
+
+varying vec2 vUv;
+varying vec3 vPosition;
+
+void main() {
+  vUv = uv;
+  vPosition = position;
+  gl_Position = vec4(position, 1.0);
+}
