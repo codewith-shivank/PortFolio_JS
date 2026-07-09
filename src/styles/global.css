@@ -72,11 +72,20 @@ body {
   color: var(--col-text);
   font-family: var(--font-body);
   overflow-x: hidden;
-  cursor: none; /* Custom cursor replaces default */
 }
 
-/* Hides native cursor site-wide — custom cursor handles it */
-* { cursor: none !important; }
+/* Custom cursor support: hide native cursor only on hover-capable devices */
+@media (hover: hover) {
+  body, a, button, input, textarea, [role="button"] {
+    cursor: none;
+  }
+}
+
+/* Visible focus states for keyboard accessibility */
+:focus-visible {
+  outline: 2px solid var(--col-primary);
+  outline-offset: 4px;
+}
 
 a {
   color: inherit;

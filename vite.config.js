@@ -37,10 +37,8 @@ export default defineConfig({
         manualChunks: {
           three: ['three'],
           react: ['react', 'react-dom'],
-          gsap: ['gsap'],
           framer: ['framer-motion'],
           physics: ['cannon-es'],
-          audio: ['howler'],
         },
       },
     },

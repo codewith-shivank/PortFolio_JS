@@ -16,8 +16,18 @@ export default function MagneticCursor() {
   const springY = useSpring(cursorY, springConfig);
 
   const [variant, setVariant] = useState('default'); // default | hover | click | text
+  const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia('(hover: hover)');
+    setEnabled(mediaQuery.matches);
+    const handleMediaChange = (e) => setEnabled(e.matches);
+    mediaQuery.addEventListener('change', handleMediaChange);
+    return () => mediaQuery.removeEventListener('change', handleMediaChange);
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) return;
     const moveCursor = (e) => {
       cursorX.set(e.clientX - 20);
       cursorY.set(e.clientY - 20);
@@ -80,7 +90,7 @@ export default function MagneticCursor() {
       window.removeEventListener('mouseup', onUp);
       observer.disconnect();
     };
-  }, []);
+  }, [enabled]);
 
   const variants = {
     default: {
@@ -116,6 +126,8 @@ export default function MagneticCursor() {
       scale: 1,
     },
   };
+
+  if (!enabled) return null;
 
   const current = variants[variant] || variants.default;
 
