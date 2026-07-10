@@ -1,0 +1,16 @@
+{
+  "short_name": "Shivank",
+  "name": "CodeWithShivank — MERN Stack Developer Portfolio",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#030014",
+  "theme_color": "#030014",
+  "display": "standalone",
+  "orientation": "portrait"
+}

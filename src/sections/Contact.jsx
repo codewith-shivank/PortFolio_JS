@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import emailjs from '@emailjs/browser';
 
 export default function Contact() {
   return (
@@ -70,10 +71,13 @@ function ContactForm() {
     setStatus('sending');
     // EmailJS integration
     try {
-      await window.emailjs?.send('service_id', 'template_id', form, 'yRnWaX22NLuowNRUY');
+      await emailjs.send('service_id', 'template_id', form, {
+        publicKey: 'yRnWaX22NLuowNRUY',
+      });
       setStatus('sent');
       setForm({ name: '', email: '', message: '' });
-    } catch {
+    } catch (error) {
+      console.error('EmailJS send failed, falling back to mailto:', error);
       // Fallback: open mailto
       window.location.href = `mailto:codewithshivank@gmail.com?subject=Portfolio Contact from ${form.name}&body=${encodeURIComponent(form.message)}`;
       setStatus('sent');

@@ -1,25 +1,24 @@
 {
-  "name": "codewith-shivank-portfolio",
-  "version": "2.0.0",
+  "name": "codewith-shivank-portfolio-root",
+  "private": true,
+  "version": "3.0.0",
   "type": "module",
+  "workspaces": [
+    "client",
+    "client-next",
+    "server"
+  ],
   "scripts": {
-    "dev": "vite",
-    "start": "node -e \"const fs=require('fs'); fs.rmSync('node_modules/.vite', {recursive:true, force:true})\" && vite --force",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@react-three/drei": "^9.102.3",
-    "@react-three/fiber": "^8.16.8",
-    "cannon-es": "^0.20.0",
-    "framer-motion": "^11.2.10",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "three": "^0.165.0"
+    "install:all": "npm install && npm install --prefix client && npm install --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "build:client": "npm run build --prefix client",
+    "build:server": "npm run build --prefix server",
+    "build": "npm run build:client && npm run build:server",
+    "start": "npm run dev"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.1",
-    "vite": "^5.3.1",
-    "vite-plugin-glsl": "^1.3.0"
+    "concurrently": "^8.2.2"
   }
 }
