@@ -43,19 +43,20 @@ export default function Hero() {
       {/* ── Main Headers (Cynthia Stack) ── */}
       <div className="w-full flex-grow flex flex-col justify-center max-w-7xl mx-auto">
         <div className="space-y-1">
-          <motion.div {...fadeUp(0.15)}>
-            <h1
-              id="hero-heading"
-              className="title-giant text-text-primary"
-            >
-              {PERSONAL.firstName}
-            </h1>
-          </motion.div>
-          
+          {/* Single h1 wrapping the full name — required for correct SEO/a11y */}
+          <motion.h1
+            id="hero-heading"
+            className="title-giant text-text-primary"
+            {...fadeUp(0.15)}
+          >
+            {PERSONAL.firstName}
+          </motion.h1>
+
           <motion.div {...fadeUp(0.25)} className="flex items-center gap-6">
-            <h1 className="title-giant text-text-primary">
+            {/* "Maurya" is a continuation of the name — use p with same visual style */}
+            <p className="title-giant text-text-primary" aria-hidden="true">
               Maurya
-            </h1>
+            </p>
             {/* Status dot in the middle of headers */}
             <div className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
               <span className="status-dot" aria-hidden="true" />
@@ -66,9 +67,9 @@ export default function Hero() {
           </motion.div>
 
           <motion.div {...fadeUp(0.35)}>
-            <h2 className="title-giant text-neutral-600">
+            <p className="title-giant text-neutral-600" aria-label={`Role: ${PERSONAL.role}`}>
               MERN Developer
-            </h2>
+            </p>
           </motion.div>
         </div>
 

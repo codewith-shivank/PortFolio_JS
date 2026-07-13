@@ -78,30 +78,33 @@ export default function Navbar() {
           </button>
         </Magnetic>
 
-        {/* Desktop Links (Magnetic) */}
-        <div className="hidden md:flex items-center gap-8" role="list">
-          {NAV_SECTIONS.map((s) => (
-            <Magnetic key={s.id}>
-              <button
-                onClick={() => handleNav(s.id)}
-                role="listitem"
-                className="relative group cursor-pointer"
-                aria-current={currentSection === s.id ? 'page' : undefined}
-              >
-                <span
-                  className={cn(
-                    'font-mono text-[0.65rem] tracking-[0.15em] uppercase transition-colors duration-200',
-                    currentSection === s.id
-                      ? 'text-white font-bold'
-                      : 'text-neutral-500 hover:text-white'
-                  )}
-                >
-                  {s.label}
-                </span>
-              </button>
-            </Magnetic>
-          ))}
-        </div>
+        {/* Desktop Links */}
+        <nav className="hidden md:flex items-center gap-8" aria-label="Desktop navigation">
+          <ul className="flex items-center gap-8 list-none">
+            {NAV_SECTIONS.map((s) => (
+              <li key={s.id}>
+                <Magnetic>
+                  <button
+                    onClick={() => handleNav(s.id)}
+                    className="relative group cursor-pointer"
+                    aria-current={currentSection === s.id ? 'page' : undefined}
+                  >
+                    <span
+                      className={cn(
+                        'font-mono text-[0.65rem] tracking-[0.15em] uppercase transition-colors duration-200',
+                        currentSection === s.id
+                          ? 'text-white font-bold'
+                          : 'text-neutral-500 hover:text-white'
+                      )}
+                    >
+                      {s.label}
+                    </span>
+                  </button>
+                </Magnetic>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
         {/* Mobile Hamburger (Magnetic wrapper on the trigger) */}
         <Magnetic>

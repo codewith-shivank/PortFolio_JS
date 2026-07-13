@@ -15,12 +15,12 @@ export const protect = async (req, res, next) => {
       // Extract token from header
       token = req.headers.authorization.split(' ')[1];
 
-      // Verify token
+      // Verify token signature and expiry
       const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretjwtkey');
 
-      // Find user and attach to request object
+      // Find user and attach to request object (exclude password hash)
       req.user = await User.findById(decoded.id).select('-password');
-      
+
       if (!req.user) {
         res.status(401);
         return next(new Error('Not authorized, user not found'));
@@ -28,7 +28,10 @@ export const protect = async (req, res, next) => {
 
       next();
     } catch (error) {
-      console.error(error);
+      // Only log in development to avoid leaking token error details in production
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[Auth]', error.message);
+      }
       res.status(401);
       next(new Error('Not authorized, token failed'));
     }

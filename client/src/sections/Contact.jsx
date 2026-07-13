@@ -122,13 +122,13 @@ function ContactForm() {
       toast.error('Please enter your email');
       return false;
     }
-    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(form.email)) {
       toast.error('Please enter a valid email address');
       return false;
     }
     if (!form.message.trim() || form.message.trim().length < 10) {
-      toast.error('Please enter a message containing at least 10 characters');
+      toast.error('Message must be at least 10 characters');
       return false;
     }
     return true;
@@ -141,21 +141,23 @@ function ContactForm() {
 
     try {
       await axios.post(`${API_BASE}/contact`, form);
-      toast.success('Message sent! I\'ll get back to you within 24 hours.', { duration: 5000 });
+      toast.success("Message sent! I'll get back to you within 24 hours.", { duration: 5000 });
       setForm({ name: '', email: '', subject: '', message: '' });
     } catch (err) {
-      console.warn('Contact API error, triggering fallback:', err);
-      toast.error('Contact database service is offline. Opening your email client to send the message...', {
-        duration: 4000,
-        icon: '✉️'
-      });
-      setTimeout(() => {
-        window.location.href = `mailto:${SITE.email}?subject=${encodeURIComponent(form.subject || 'Portfolio Inquiry')}&body=${encodeURIComponent(`From: ${form.name}\nEmail: ${form.email}\n\n${form.message}`)}`;
-      }, 1500);
+      // Fallback: open email client if API is down
+      const mailtoFallback = `mailto:${SITE.email}?subject=${encodeURIComponent(form.subject || 'Portfolio Inquiry')}&body=${encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`)}`;
+
+      toast.error(
+        'Server temporarily unavailable — opening your email client as fallback.',
+        { duration: 4000, icon: '✉️' }
+      );
+      // Delay to let toast show before navigation
+      setTimeout(() => { window.location.href = mailtoFallback; }, 1600);
     } finally {
       setSubmitting(false);
     }
   };
+
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8" noValidate aria-label="Contact form">
@@ -222,8 +224,9 @@ function ContactForm() {
         <button
           type="submit"
           disabled={submitting}
+          aria-busy={submitting}
+          aria-label={submitting ? 'Sending message...' : 'Send message'}
           className="btn btn-primary"
-          aria-label="Send message"
         >
           {submitting ? 'Sending...' : 'Send Message →'}
         </button>

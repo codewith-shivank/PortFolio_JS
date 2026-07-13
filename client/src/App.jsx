@@ -105,12 +105,17 @@ export default function App() {
         }}
       />
 
-      {/* Elegant simple loader — fades out in ~1s */}
+      {/* Loading screen — always visible until loader completes */}
       <AnimatePresence>
         {!appReady && <SimpleLoader onComplete={() => setAppReady(true)} />}
       </AnimatePresence>
 
-      {appReady && (
+      {/* App content — always mounted in DOM to avoid Router teardown.
+          Hidden until loader finishes so routes are ready immediately. */}
+      <div
+        aria-hidden={!appReady}
+        style={{ visibility: appReady ? 'visible' : 'hidden' }}
+      >
         <Router>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -132,9 +137,12 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+            {/* Catch-all — redirect unknown routes to home */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>
-      )}
+      </div>
     </AuthProvider>
   );
 }
+

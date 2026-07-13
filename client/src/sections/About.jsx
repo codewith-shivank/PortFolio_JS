@@ -33,15 +33,17 @@ export default function About() {
             {/* Profile Avatar Frame */}
             <div className="mt-8 relative rounded-xl overflow-hidden border border-white/10 aspect-[4/3] max-w-xs">
               <img
-                src="/Profile insta.jpg"
-                alt="Shivank Maurya Profile"
+                src="/Profile%20insta.jpg"
+                alt="Shivank Maurya, MERN Stack Software Engineer"
                 className="w-full h-full object-cover grayscale contrast-125"
+                loading="lazy"
+                decoding="async"
                 onError={(e) => {
-                  e.target.parentNode.innerHTML = `
-                    <div class="w-full h-full flex items-center justify-center bg-neutral-900 text-6xl">
-                      👨‍💻
-                    </div>
-                  `;
+                  e.currentTarget.style.display = 'none';
+                  const fallback = document.createElement('div');
+                  fallback.className = 'w-full h-full flex items-center justify-center bg-neutral-900 text-6xl';
+                  fallback.textContent = '👨‍💻';
+                  e.currentTarget.parentNode.appendChild(fallback);
                 }}
               />
             </div>

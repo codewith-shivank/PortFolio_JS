@@ -44,9 +44,14 @@
     <!-- Preconnect to font origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- DNS prefetch as fallback for browsers that don't support preconnect -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 
-    <!-- Premium Typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!-- Premium Typography — display=swap ensures text renders immediately with fallback font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
@@ -79,10 +84,7 @@
   </head>
   <body>
     <!-- Skip to main content (accessibility) -->
-    <a
-      href="#main-content"
-      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-bg-primary focus:text-accent-violet focus:rounded-lg focus:text-sm focus:font-semibold"
-    >
+    <a href="#main-content" class="skip-link">
       Skip to main content
     </a>
     <div id="root"></div>

@@ -16,9 +16,10 @@
   --text-muted:     #525252;
   --text-faint:     #262626;
 
-  /* Accents (extremely minimal, mostly white) */
+  /* Accents */
   --accent-white:   #ffffff;
   --accent-gray:    #262626;
+  --accent-violet:  #7c6dfa;
 
   /* Borders */
   --border-subtle:  rgba(255, 255, 255, 0.1);
@@ -318,4 +319,169 @@ body {
     padding-top: 5rem;
     padding-bottom: 5rem;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION LABEL — Referenced by SectionHeading + sections
+   ═══════════════════════════════════════════════════════════ */
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GRADIENT TEXT — Referenced by SectionHeading + SimpleLoader
+   ═══════════════════════════════════════════════════════════ */
+.gradient-text {
+  background: linear-gradient(135deg, #7c6dfa, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LOADER OVERLAY — Referenced by SimpleLoader.jsx
+   ═══════════════════════════════════════════════════════════ */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.loader-progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--border-faint);
+  overflow: hidden;
+}
+
+.loader-progress-fill {
+  height: 100%;
+  background: var(--text-primary);
+  transition: width 0.25s var(--ease-out-expo);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL PROGRESS BAR — Referenced by App.jsx ScrollProgressBar
+   ═══════════════════════════════════════════════════════════ */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: transparent;
+  z-index: 200;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.scroll-progress-bar {
+  height: 100%;
+  background: var(--text-primary);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SKIP LINK — Accessibility
+   ═══════════════════════════════════════════════════════════ */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 10000;
+  padding: 0.5rem 1rem;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   VISUALLY HIDDEN — Screen reader only
+   ═══════════════════════════════════════════════════════════ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PERFORMANCE
+   ═══════════════════════════════════════════════════════════ */
+/* Ensure animated elements use GPU compositing */
+.scroll-progress-bar,
+.loader-progress-fill {
+  will-change: transform;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ADMIN FORM ELEMENTS — Used in Login.jsx and Dashboard.jsx
+   ═══════════════════════════════════════════════════════════ */
+.form-label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 0.5rem;
+}
+
+.form-input {
+  width: 100%;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s var(--ease-out-expo);
+}
+
+.form-input:focus {
+  border-color: var(--text-primary);
+}
+
+.form-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ── Button Size Variants ── */
+.btn-lg {
+  padding: 14px 28px;
+  font-size: 0.875rem;
+}
+
+.btn-sm {
+  padding: 6px 14px;
+  font-size: 0.7rem;
 }

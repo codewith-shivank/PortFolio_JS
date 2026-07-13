@@ -37,15 +37,18 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    // Warn if any individual chunk exceeds 500kb gzipped
+    chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
         manualChunks: {
-          react: ['react', 'react-dom'],
+          // Do NOT split react — it's small and better inlined
           router: ['react-router-dom'],
           framer: ['framer-motion'],
-          vendor: ['axios', 'react-hot-toast', 'lucide-react'],
+          vendor: ['axios', 'react-hot-toast'],
         },
       },
     },
   },
 });
+
