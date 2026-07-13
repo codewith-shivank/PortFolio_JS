@@ -17,8 +17,8 @@ if (!process.env.JWT_SECRET) {
   );
 }
 
-if (!process.env.MONGODB_URI) {
-  console.warn('\x1b[33m[WARN] MONGODB_URI is not set. Database connection may fail.\x1b[0m');
+if (!process.env.MONGO_URI) {
+  console.warn('\x1b[33m[WARN] MONGO_URI is not set. Database connection may fail.\x1b[0m');
 }
 
 // Connect to Database
