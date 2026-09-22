@@ -39,7 +39,7 @@ router.post('/', protect, admin, async (req, res, next) => {
  */
 router.put('/:id', protect, admin, async (req, res, next) => {
   try {
-    const testimonial = await Testimonial.findByIdAndUpdate(req.id || req.params.id, req.body, {
+    const testimonial = await Testimonial.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
@@ -60,7 +60,7 @@ router.put('/:id', protect, admin, async (req, res, next) => {
  */
 router.delete('/:id', protect, admin, async (req, res, next) => {
   try {
-    const testimonial = await Testimonial.findByIdAndDelete(req.id || req.params.id);
+    const testimonial = await Testimonial.findByIdAndDelete(req.params.id);
     if (!testimonial) {
       res.status(404);
       return next(new Error('Testimonial not found'));
