@@ -3,11 +3,40 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 
+function mockApiPlugin() {
+  return {
+    name: 'mock-api-endpoints',
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        if (req.url && (req.url === '/health' || req.url.startsWith('/api/'))) {
+          res.setHeader('Content-Type', 'application/json');
+          if (req.url === '/health' || req.url.startsWith('/api/health')) {
+            return res.end(JSON.stringify({ status: 'OK', uptime: Math.floor(process.uptime()) }));
+          }
+          if (req.url.startsWith('/api/contact')) {
+            return res.end(JSON.stringify({ success: true, message: 'Message sent! Thank you for reaching out.' }));
+          }
+          if (req.url.startsWith('/api/resume/download')) {
+            return res.end(JSON.stringify({ success: true }));
+          }
+          if (req.url.startsWith('/api/auth/me')) {
+            res.statusCode = 401;
+            return res.end(JSON.stringify({ success: false, message: 'Unauthenticated' }));
+          }
+          return res.end(JSON.stringify({ success: true, data: [] }));
+        }
+        next();
+      });
+    },
+  };
+}
+
 export default defineConfig({
   base: process.env.GITHUB_ACTIONS === 'true' ? '/PortFolio_JS/' : '/',
   plugins: [
     react(),
     tailwindcss(),
+    mockApiPlugin(),
   ],
   resolve: {
     alias: {
@@ -22,20 +51,17 @@ export default defineConfig({
     },
   },
   server: {
+    host: '0.0.0.0',
     port: 3000,
     open: false,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:5000',
-        changeOrigin: true,
-      },
-    },
+    allowedHosts: true,
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'framer-motion', 'axios'],
   },
   build: {
-    outDir: 'dist',
+    outDir: '../dist',
+    emptyOutDir: true,
     sourcemap: false,
     // Warn if any individual chunk exceeds 500kb gzipped
     chunkSizeWarningLimit: 600,
