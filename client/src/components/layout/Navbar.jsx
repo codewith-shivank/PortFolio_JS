@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { NAV_SECTIONS, PERSONAL } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import Magnetic from '@/components/ui/Magnetic';
+import UserAuthButton from '@/components/auth/UserAuthButton';
 
 /**
  * Navbar — Cynthia Ugwu Style Overhaul
@@ -78,59 +79,66 @@ export default function Navbar() {
           </button>
         </Magnetic>
 
-        {/* Desktop Links */}
-        <nav className="hidden md:flex items-center gap-8" aria-label="Desktop navigation">
-          <ul className="flex items-center gap-8 list-none">
-            {NAV_SECTIONS.map((s) => (
-              <li key={s.id}>
-                <Magnetic>
-                  <button
-                    onClick={() => handleNav(s.id)}
-                    className="relative group cursor-pointer"
-                    aria-current={currentSection === s.id ? 'page' : undefined}
-                  >
-                    <span
-                      className={cn(
-                        'font-mono text-[0.65rem] tracking-[0.15em] uppercase transition-colors duration-200',
-                        currentSection === s.id
-                          ? 'text-white font-bold'
-                          : 'text-neutral-500 hover:text-white'
-                      )}
+        {/* Desktop Links & Auth */}
+        <div className="hidden md:flex items-center gap-8">
+          <nav aria-label="Desktop navigation">
+            <ul className="flex items-center gap-8 list-none">
+              {NAV_SECTIONS.map((s) => (
+                <li key={s.id}>
+                  <Magnetic>
+                    <button
+                      onClick={() => handleNav(s.id)}
+                      className="relative group cursor-pointer"
+                      aria-current={currentSection === s.id ? 'page' : undefined}
                     >
-                      {s.label}
-                    </span>
-                  </button>
-                </Magnetic>
-              </li>
-            ))}
-          </ul>
-        </nav>
+                      <span
+                        className={cn(
+                          'font-mono text-[0.65rem] tracking-[0.15em] uppercase transition-colors duration-200',
+                          currentSection === s.id
+                            ? 'text-white font-bold'
+                            : 'text-neutral-500 hover:text-white'
+                        )}
+                      >
+                        {s.label}
+                      </span>
+                    </button>
+                  </Magnetic>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-        {/* Mobile Hamburger (Magnetic wrapper on the trigger) */}
-        <Magnetic>
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden flex flex-col gap-1.5 p-2 rounded-md text-neutral-500 hover:text-white transition-colors cursor-pointer"
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={menuOpen}
-          >
-            <motion.span
-              className="block w-5 h-0.5 bg-current"
-              animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 8 : 0 }}
-              transition={{ duration: 0.2 }}
-            />
-            <motion.span
-              className="block w-5 h-0.5 bg-current"
-              animate={{ opacity: menuOpen ? 0 : 1 }}
-              transition={{ duration: 0.2 }}
-            />
-            <motion.span
-              className="block w-5 h-0.5 bg-current"
-              animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -8 : 0 }}
-              transition={{ duration: 0.2 }}
-            />
-          </button>
-        </Magnetic>
+          <UserAuthButton />
+        </div>
+
+        {/* Mobile Right Controls: Auth & Hamburger */}
+        <div className="flex md:hidden items-center gap-3">
+          <UserAuthButton isMobile={true} />
+          <Magnetic>
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="flex flex-col gap-1.5 p-2 rounded-md text-neutral-500 hover:text-white transition-colors cursor-pointer"
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={menuOpen}
+            >
+              <motion.span
+                className="block w-5 h-0.5 bg-current"
+                animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 8 : 0 }}
+                transition={{ duration: 0.2 }}
+              />
+              <motion.span
+                className="block w-5 h-0.5 bg-current"
+                animate={{ opacity: menuOpen ? 0 : 1 }}
+                transition={{ duration: 0.2 }}
+              />
+              <motion.span
+                className="block w-5 h-0.5 bg-current"
+                animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -8 : 0 }}
+                transition={{ duration: 0.2 }}
+              />
+            </button>
+          </Magnetic>
+        </div>
       </motion.nav>
 
       {/* Mobile Menu Panel */}

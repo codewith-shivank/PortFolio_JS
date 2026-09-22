@@ -1,16 +1,30 @@
 {
   "short_name": "Shivank",
-  "name": "CodeWithShivank — MERN Stack Developer Portfolio",
+  "name": "Shivank Maurya — MERN Stack Software Engineer",
+  "description": "Full Stack Software Engineer portfolio specializing in React, Node.js, Express, and MongoDB.",
   "icons": [
     {
-      "src": "favicon.svg",
+      "src": "/favicon.svg",
       "type": "image/svg+xml",
-      "sizes": "any"
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
   "start_url": "/",
-  "background_color": "#030014",
-  "theme_color": "#030014",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
   "display": "standalone",
   "orientation": "portrait"
 }

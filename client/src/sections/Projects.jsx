@@ -1,6 +1,11 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
+import { collection, doc, setDoc, deleteDoc, onSnapshot } from 'firebase/firestore';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 import { PROJECTS_DATA, PROJECT_CATEGORIES } from '@/lib/constants';
+import { useAuth } from '@/context/AuthContext';
+import { db, handleFirestoreError, OperationType } from '@/lib/firebase';
 
 /**
  * Projects — Cynthia Ugwu Style List
@@ -16,6 +21,72 @@ export default function Projects() {
   const [hoveredProject, setHoveredProject] = useState(null);
   // Track image load errors per project id to render safe fallback
   const [imgErrors, setImgErrors] = useState({});
+
+  // Firestore real-time project likes state
+  const { user, signInWithGoogle } = useAuth();
+  const [likesData, setLikesData] = useState({ counts: {}, userLiked: {} });
+
+  useEffect(() => {
+    try {
+      const unsubscribe = onSnapshot(
+        collection(db, 'projectLikes'),
+        (snapshot) => {
+          const counts = {};
+          const userLiked = {};
+          snapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            if (data?.projectId) {
+              counts[data.projectId] = (counts[data.projectId] || 0) + 1;
+              if (user?.uid && data.userId === user.uid) {
+                userLiked[data.projectId] = true;
+              }
+            }
+          });
+          setLikesData({ counts, userLiked });
+        },
+        (error) => {
+          console.error('Error listening to project likes:', error);
+        }
+      );
+      return () => unsubscribe();
+    } catch (err) {
+      console.error('Snapshot failed:', err);
+    }
+  }, [user?.uid]);
+
+  const handleToggleLike = async (e, projectId) => {
+    e.stopPropagation();
+    if (!user) {
+      toast('Sign in with Google to endorse projects!', { icon: '✨' });
+      await signInWithGoogle();
+      return;
+    }
+
+    const likeId = `${user.uid}_${projectId}`;
+    const likeDocRef = doc(db, 'projectLikes', likeId);
+    const isCurrentlyLiked = !!likesData.userLiked[projectId];
+
+    try {
+      if (isCurrentlyLiked) {
+        await deleteDoc(likeDocRef);
+        toast.success('Endorsement removed', { id: `like-${projectId}` });
+      } else {
+        await setDoc(likeDocRef, {
+          projectId,
+          userId: user.uid,
+          userName: user.displayName || 'Developer',
+          createdAt: new Date().toISOString(),
+        });
+        toast.success('Project endorsed! Saved in Firestore.', { id: `like-${projectId}` });
+      }
+    } catch (err) {
+      handleFirestoreError(
+        err,
+        isCurrentlyLiked ? OperationType.DELETE : OperationType.CREATE,
+        `projectLikes/${likeId}`
+      );
+    }
+  };
 
   // Coordinates for the floating cursor follower
   const mouseX = useMotionValue(0);
@@ -121,7 +192,7 @@ export default function Projects() {
             >
               {/* Title & Tech Stack */}
               <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-8">
-                <span className="project-row-title">{project.title}</span>
+                <h3 className="project-row-title font-medium">{project.title}</h3>
                 <div className="flex flex-wrap gap-1.5 mt-2 md:mt-0">
                   {project.techStack.slice(0, 3).map((tech) => (
                     <span
@@ -135,10 +206,33 @@ export default function Projects() {
               </div>
 
               {/* Meta Right */}
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-4 sm:gap-6">
                 <span className="project-row-meta hidden sm:inline-block">
                   {project.category === 'fullstack' ? 'MERN Stack' : 'Frontend'}
                 </span>
+
+                {/* Firestore Endorsement Button */}
+                <button
+                  type="button"
+                  onClick={(e) => handleToggleLike(e, project.id)}
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-mono transition-all cursor-pointer ${
+                    likesData.userLiked[project.id]
+                      ? 'border-red-500/40 bg-red-500/10 text-red-400'
+                      : 'border-white/10 bg-white/5 text-neutral-400 hover:text-white hover:border-white/25'
+                  }`}
+                  aria-label={`${
+                    likesData.userLiked[project.id] ? 'Remove endorsement for' : 'Endorse'
+                  } ${project.title}`}
+                >
+                  {likesData.userLiked[project.id] ? (
+                    <FaHeart className="text-red-400 text-[0.7rem]" />
+                  ) : (
+                    <FaRegHeart className="text-[0.7rem]" />
+                  )}
+                  <span className="text-[0.65rem]">
+                    {likesData.counts[project.id] || 0}
+                  </span>
+                </button>
 
                 {/* GitHub Icon — secure link */}
                 <a

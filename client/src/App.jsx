@@ -20,6 +20,7 @@ import About from '@/sections/About';
 import Skills from '@/sections/Skills';
 import Projects from '@/sections/Projects';
 import Experience from '@/sections/Experience';
+import Guestbook from '@/sections/Guestbook';
 import Contact from '@/sections/Contact';
 
 /**
@@ -42,6 +43,7 @@ function HomePage() {
         <Skills />
         <Projects />
         <Experience />
+        <Guestbook />
         <Contact />
       </main>
 
@@ -73,7 +75,7 @@ function ScrollProgressBar() {
 }
 
 function ProtectedRoute({ children }) {
-  const { token, loading } = useAuth();
+  const { user, isAdmin, token, loading } = useAuth();
   if (loading) {
     return (
       <div className="min-h-screen bg-bg-primary flex items-center justify-center font-mono text-xs text-text-muted">
@@ -81,7 +83,10 @@ function ProtectedRoute({ children }) {
       </div>
     );
   }
-  if (!token) return <Navigate to="/admin/login" replace />;
+  if (!token && !user) return <Navigate to="/admin/login" replace />;
+  if (user && !isAdmin && user.email?.toLowerCase() !== 'codewithshivank@gmail.com') {
+    return <Navigate to="/admin/login" replace />;
+  }
   return children;
 }
 

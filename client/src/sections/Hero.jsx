@@ -43,28 +43,24 @@ export default function Hero() {
       {/* ── Main Headers (Cynthia Stack) ── */}
       <div className="w-full flex-grow flex flex-col justify-center max-w-7xl mx-auto">
         <div className="space-y-1">
-          {/* Single h1 wrapping the full name — required for correct SEO/a11y */}
+          {/* Full name in single semantic H1 for optimal SEO & accessibility */}
           <motion.h1
             id="hero-heading"
             className="title-giant text-text-primary"
             {...fadeUp(0.15)}
           >
-            {PERSONAL.firstName}
-          </motion.h1>
-
-          <motion.div {...fadeUp(0.25)} className="flex items-center gap-6">
-            {/* "Maurya" is a continuation of the name — use p with same visual style */}
-            <p className="title-giant text-text-primary" aria-hidden="true">
-              Maurya
-            </p>
-            {/* Status dot in the middle of headers */}
-            <div className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
-              <span className="status-dot" aria-hidden="true" />
-              <span className="font-mono text-[0.6rem] tracking-[0.15em] uppercase text-text-secondary">
-                {SITE.availability}
+            <span className="block">{PERSONAL.firstName}</span>
+            <span className="flex items-center gap-6">
+              <span>{PERSONAL.lastName}</span>
+              {/* Status dot in the middle of headers */}
+              <span className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs font-normal align-middle">
+                <span className="status-dot" aria-hidden="true" />
+                <span className="font-mono text-[0.6rem] tracking-[0.15em] uppercase text-text-secondary">
+                  {SITE.availability}
+                </span>
               </span>
-            </div>
-          </motion.div>
+            </span>
+          </motion.h1>
 
           <motion.div {...fadeUp(0.35)}>
             <p className="title-giant text-neutral-600" aria-label={`Role: ${PERSONAL.role}`}>

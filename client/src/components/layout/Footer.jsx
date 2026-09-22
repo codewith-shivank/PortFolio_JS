@@ -24,9 +24,9 @@ export default function Footer() {
 
           {/* Column 1: Brand & Status */}
           <div>
-            <h2 className="font-display font-extrabold text-lg tracking-tighter uppercase mb-3">
+            <p className="font-display font-extrabold text-lg tracking-tighter uppercase mb-3">
               {PERSONAL.name}
-            </h2>
+            </p>
             <p className="font-body text-xs text-neutral-500 leading-relaxed max-w-[240px]">
               {PERSONAL.shortBio}
             </p>
@@ -34,7 +34,7 @@ export default function Footer() {
 
           {/* Column 2: Quick Nav */}
           <div>
-            <h3 className="text-meta mb-4">Navigation</h3>
+            <p className="text-meta mb-4">Navigation</p>
             <nav aria-label="Footer navigation">
               <ul className="space-y-2">
                 {NAV_SECTIONS.map((s) => (
@@ -55,7 +55,7 @@ export default function Footer() {
 
           {/* Column 3: Contact Channels */}
           <div>
-            <h3 className="text-meta mb-4">Inquiries</h3>
+            <p className="text-meta mb-4">Inquiries</p>
             <ul className="space-y-3">
               {SOCIAL_LINKS.map((link) => (
                 <li key={link.label}>

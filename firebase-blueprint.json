@@ -1,0 +1,169 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile data populated upon Google Sign-In",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique Firebase Auth UID of the user",
+          "maxLength": 128
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The user's full name from Google Auth",
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's verified email address",
+          "maxLength": 120
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Avatar URL from Google Sign-In",
+          "maxLength": 500
+        },
+        "role": {
+          "type": "string",
+          "description": "Authorization role for administrative access",
+          "enum": ["user", "admin"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the user first authenticated"
+        },
+        "lastLoginAt": {
+          "type": "string",
+          "description": "Timestamp of the user's latest login"
+        }
+      },
+      "required": ["id", "displayName", "email", "role"]
+    },
+    "Inquiry": {
+      "title": "Inquiry",
+      "description": "Contact form submissions and inquiries sent to the portfolio owner",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Sender name",
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "description": "Sender contact email",
+          "maxLength": 120
+        },
+        "subject": {
+          "type": "string",
+          "description": "Inquiry subject line",
+          "maxLength": 200
+        },
+        "message": {
+          "type": "string",
+          "description": "Body text of the message",
+          "maxLength": 3000
+        },
+        "userId": {
+          "type": "string",
+          "description": "Authenticated user UID if signed in",
+          "maxLength": 128
+        },
+        "status": {
+          "type": "string",
+          "description": "Read status managed by admin",
+          "enum": ["unread", "read", "archived"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the inquiry was received"
+        }
+      },
+      "required": ["name", "email", "subject", "message", "status", "createdAt"]
+    },
+    "ProjectLike": {
+      "title": "ProjectLike",
+      "description": "Project endorsement/like by an authenticated user",
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "description": "Target project slug or identifier",
+          "maxLength": 64
+        },
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the user who liked the project",
+          "maxLength": 128
+        },
+        "userName": {
+          "type": "string",
+          "description": "Display name of the liking user",
+          "maxLength": 100
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the like was created"
+        }
+      },
+      "required": ["projectId", "userId", "userName", "createdAt"]
+    },
+    "GuestbookEntry": {
+      "title": "GuestbookEntry",
+      "description": "Peer recommendation or guestbook message left by an authenticated visitor",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the entry author",
+          "maxLength": 128
+        },
+        "userName": {
+          "type": "string",
+          "description": "Author display name",
+          "maxLength": 100
+        },
+        "userPhoto": {
+          "type": "string",
+          "description": "Author avatar URL",
+          "maxLength": 500
+        },
+        "userEmail": {
+          "type": "string",
+          "description": "Author email",
+          "maxLength": 120
+        },
+        "message": {
+          "type": "string",
+          "description": "Guestbook feedback or endorsement text",
+          "maxLength": 1000
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when entry was posted"
+        }
+      },
+      "required": ["userId", "userName", "message", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Collection of user profiles keyed by their Firebase Auth UID"
+    },
+    "/inquiries/{inquiryId}": {
+      "schema": "Inquiry",
+      "description": "Contact submissions and inquiries from prospective clients and recruiters"
+    },
+    "/projectLikes/{likeId}": {
+      "schema": "ProjectLike",
+      "description": "Project like records keyed by composite user_project ID"
+    },
+    "/guestbook/{entryId}": {
+      "schema": "GuestbookEntry",
+      "description": "Verified peer testimonials and visitor guestbook entries"
+    }
+  }
+}

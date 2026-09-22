@@ -47,6 +47,7 @@ export const NAV_SECTIONS = [
   { id: 'skills', label: 'Skills' },
   { id: 'projects', label: 'Projects' },
   { id: 'experience', label: 'Experience' },
+  { id: 'guestbook', label: 'Guestbook' },
   { id: 'contact', label: 'Contact' },
 ];
 
