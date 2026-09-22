@@ -39,7 +39,7 @@ router.post('/', protect, admin, async (req, res, next) => {
  */
 router.put('/:id', protect, admin, async (req, res, next) => {
   try {
-    const skill = await Skill.findByIdAndUpdate(req.id || req.params.id, req.body, {
+    const skill = await Skill.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
@@ -60,7 +60,7 @@ router.put('/:id', protect, admin, async (req, res, next) => {
  */
 router.delete('/:id', protect, admin, async (req, res, next) => {
   try {
-    const skill = await Skill.findByIdAndDelete(req.id || req.params.id);
+    const skill = await Skill.findByIdAndDelete(req.params.id);
     if (!skill) {
       res.status(404);
       return next(new Error('Skill not found'));

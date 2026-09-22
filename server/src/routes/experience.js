@@ -39,7 +39,7 @@ router.post('/', protect, admin, async (req, res, next) => {
  */
 router.put('/:id', protect, admin, async (req, res, next) => {
   try {
-    const experience = await Experience.findByIdAndUpdate(req.id || req.params.id, req.body, {
+    const experience = await Experience.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
@@ -60,7 +60,7 @@ router.put('/:id', protect, admin, async (req, res, next) => {
  */
 router.delete('/:id', protect, admin, async (req, res, next) => {
   try {
-    const experience = await Experience.findByIdAndDelete(req.id || req.params.id);
+    const experience = await Experience.findByIdAndDelete(req.params.id);
     if (!experience) {
       res.status(404);
       return next(new Error('Experience entry not found'));

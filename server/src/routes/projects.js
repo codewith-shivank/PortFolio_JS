@@ -39,7 +39,7 @@ router.post('/', protect, admin, async (req, res, next) => {
  */
 router.put('/:id', protect, admin, async (req, res, next) => {
   try {
-    const project = await Project.findByIdAndUpdate(req.id || req.params.id, req.body, {
+    const project = await Project.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
@@ -60,7 +60,7 @@ router.put('/:id', protect, admin, async (req, res, next) => {
  */
 router.delete('/:id', protect, admin, async (req, res, next) => {
   try {
-    const project = await Project.findByIdAndDelete(req.id || req.params.id);
+    const project = await Project.findByIdAndDelete(req.params.id);
     if (!project) {
       res.status(404);
       return next(new Error('Project not found'));
